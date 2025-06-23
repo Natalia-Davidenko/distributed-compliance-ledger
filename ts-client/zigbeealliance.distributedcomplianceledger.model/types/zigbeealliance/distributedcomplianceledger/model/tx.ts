@@ -60,6 +60,7 @@ export interface MsgUpdateModel {
   enhancedSetupFlowTCFileSize: number;
   maintenanceUrl: string;
   commissioningFallbackUrl: string;
+  commissioningModeSecondaryStepsHint: number;
 }
 
 export interface MsgUpdateModelResponse {
@@ -518,6 +519,7 @@ function createBaseMsgUpdateModel(): MsgUpdateModel {
     enhancedSetupFlowTCFileSize: 0,
     maintenanceUrl: "",
     commissioningFallbackUrl: "",
+    commissioningModeSecondaryStepsHint: 0,
   };
 }
 
@@ -591,6 +593,9 @@ export const MsgUpdateModel = {
     }
     if (message.commissioningFallbackUrl !== "") {
       writer.uint32(186).string(message.commissioningFallbackUrl);
+    }
+    if (message.commissioningModeSecondaryStepsHint !== 0) {
+      writer.uint32(192).uint32(message.commissioningModeSecondaryStepsHint);
     }
     return writer;
   },
@@ -671,6 +676,9 @@ export const MsgUpdateModel = {
         case 23:
           message.commissioningFallbackUrl = reader.string();
           break;
+        case 24:
+          message.commissioningModeSecondaryStepsHint = reader.uint32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -718,6 +726,9 @@ export const MsgUpdateModel = {
         : 0,
       maintenanceUrl: isSet(object.maintenanceUrl) ? String(object.maintenanceUrl) : "",
       commissioningFallbackUrl: isSet(object.commissioningFallbackUrl) ? String(object.commissioningFallbackUrl) : "",
+      commissioningModeSecondaryStepsHint: isSet(object.commissioningModeSecondaryStepsHint)
+        ? Number(object.commissioningModeSecondaryStepsHint)
+        : 0,
     };
   },
 
@@ -754,6 +765,8 @@ export const MsgUpdateModel = {
       && (obj.enhancedSetupFlowTCFileSize = Math.round(message.enhancedSetupFlowTCFileSize));
     message.maintenanceUrl !== undefined && (obj.maintenanceUrl = message.maintenanceUrl);
     message.commissioningFallbackUrl !== undefined && (obj.commissioningFallbackUrl = message.commissioningFallbackUrl);
+    message.commissioningModeSecondaryStepsHint !== undefined
+      && (obj.commissioningModeSecondaryStepsHint = Math.round(message.commissioningModeSecondaryStepsHint));
     return obj;
   },
 
@@ -782,6 +795,7 @@ export const MsgUpdateModel = {
     message.enhancedSetupFlowTCFileSize = object.enhancedSetupFlowTCFileSize ?? 0;
     message.maintenanceUrl = object.maintenanceUrl ?? "";
     message.commissioningFallbackUrl = object.commissioningFallbackUrl ?? "";
+    message.commissioningModeSecondaryStepsHint = object.commissioningModeSecondaryStepsHint ?? 0;
     return message;
   },
 };

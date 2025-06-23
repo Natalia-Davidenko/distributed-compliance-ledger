@@ -203,6 +203,7 @@ func CmdUpdateModel() *cobra.Command {
 		enhancedSetupFlowTCFileSize                uint32
 		maintenanceURL                             string
 		commissioningFallbackURL                   string
+		commissioningModeSecondaryStepsHint        uint32
 	)
 
 	cmd := &cobra.Command{
@@ -244,6 +245,7 @@ func CmdUpdateModel() *cobra.Command {
 				enhancedSetupFlowTCFileSize,
 				maintenanceURL,
 				commissioningFallbackURL,
+				commissioningModeSecondaryStepsHint,
 			)
 
 			// validate basic will be called in GenerateOrBroadcastTxCLI
