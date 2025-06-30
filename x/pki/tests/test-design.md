@@ -1,3 +1,619 @@
+1. [Vendor Info](#vendor-info)
+   * [ADD_VENDOR_INFO](#add_vendor_info)
+   * [UPDATE_VENDOR_INFO](#update_vendor_info)
+   * [GET_VENDOR_INFO](#get_vendor_info)
+   * [GET_ALL_VENDOR_INFO](#get_all_vendor_info)
+2. [Model and Model Version](#model_and_model_version)
+   * [ADD_MODEL](#add_model)
+   * [EDIT_MODEL](#edit_model)
+   * [DELETE_MODEL](#delete_model)
+   * [ADD_MODEL_VERSION](#add_model_version)
+   * [EDIT_MODEL_VERSION](#edit_model_version)
+   * [DELETE_MODEL_VERSION](#delete_model_version)
+   * [GET_MODEL](#get_model)
+   * [GET_MODEL_VERSION](#get_model_version)
+   * [GET_ALL_MODELS](#get_all_models)
+   * [GET_ALL_VENDOR_MODELS](#get_all_vendor_models)
+   * [GET_ALL_MODEL_VERSIONS](#get_all_model_versions)
+3. [Compliance](#compliance)
+   * [CERTIFY_MODEL](#certify_model)
+   * [UPDATE_COMPLIANCE_INFO](#update_complince_info)
+   * [DELETE_COMPLIANCE_INFO](#delete_complince_info)
+   * [REVOKE_MODEL_CERTIFICATION](#revoke_model_certification)
+   * [PROVISION_MODEL](#provision_model)
+   * [GET_CERTIFIED_MODEL](#get_certified_model)
+   * [GET_REVOKED_MODEL](#get_revoked_model)
+   * [GET_PROVISIONAL_MODEL](#get_provisional_model)
+   * [GET_COMPLIANCE_INFO](#get_compliance_info)
+   * [GET_DEVICE_SOFTWARE_COMPLIANCE](#get_device_software_compliance)
+   * [GET_ALL_CERTIFIED_MODELS](#get_all_certified_models)
+   * [GET_ALL_REVOKED_MODELS](#get_all_revoked_models)
+   * [GET_ALL_PROVISIONAL_MODELS](#get_all_provisional_models)
+   * [GET_ALL_COMPLIANCE_INFO_RECORDS](#get_all_compliance_info_records)
+   * [GET_ALL_DEVICE_SOFTWARE_COMPLIANCES](#get_all_device_software_compliances)
+4. [X509 PKI](#X509-PKI)
+   * [All Certificates (DA, NOC)](#all_certificates)
+      * [GET_CERT](#get_cert)
+      * [GET_ALL_CERTS](#get_all_certs)
+      * [GET_ALL_CERTS_BY_SUBJECT](#get_all_certs_by_subjects)
+      * [GET_ALL_CERTS_BY_SKID](#get_all_certs_by_skid)
+      * [GET_CHILD_CERTS](#get_child_certs)
+   * [Device Attestation Certificates](#device_attestation_certificate)
+      * [PROPOSE_ADD_PAA](#propose_add_paa)
+      * [APPROVE_ADD_PAA](#approve_add_paa)
+      * [REJECT_ADD_PAA](#reject_add_paa)
+      * [PROPOSE_REVOKE_PAA](#propose_revoke_paa)
+      * [APPROVE_REVOKE_PAA](#approve_revoke_paa)
+      * [ASSIGN_VID_TO_PAA](#assign_vid_to_paa)
+      * [ADD_REVOCATION_DISTRIBUTION_POINT](#add_revocation_distribution_point)
+      * [UPDATE_REVOCATION_DISTRIBUTION_POINT](#update_revocation_distribution_point)
+      * [DELETE_REVOCATION_DISTRIBUTION_POINT](#delete_revocation_distribution_point)
+      * [ADD_PAI](#add_pai)
+      * [REVOKE_PAI](#revoke_pai)
+      * [REMOVE_PAI](#remove_pai)
+      * [GET_DA_CERT](#get_da_cert)
+      * [GET_REVOKED_DA_CERT](#get_revoked_da_cert)
+      * [GET_DA_CERTS_BY_SKID](#get_da_certs_by_skid)
+      * [GET_DA_CERTS_BY_SUBJECT](#get_da_certs_by_subject)
+      * [GET_ALL_DA_CERTS](#get_all_da_certs)
+      * [GET_ALL_REVOKED_DA_CERTS](#get_all_revoked_da_certs)
+      * [GET_PKI_REVOCATION_DISTRIBUTION_POINT](#get_pki_revocation_distribution_point)
+      * [GET_PKI_REVOCATION_DISTRIBUTION_POINTS_BY_SUBJECT_KEY_ID](#get_pki_revocation_distribution_points_by_subject_key_id)
+      * [GET_ALL_PKI_REVOCATION_DISTRIBUTION_POINT](#get_all_pki_revocation_distribution_point)
+      * [GET_PROPOSED_PAA](#get_proposed_paa)
+      * [GET_REJECTED_PAA](#get_rejected_paa)
+      * [GET_PROPOSED_PAA_TO_REVOKE](#get_proposed_paa_to_revoke)
+      * [GET_ALL_PAA](#get_all_paa)
+      * [GET_ALL_REVOKED_PAA](#get_all_revoked_paa)
+      * [GET_ALL_PROPOSED_PAA](#get_all_proposed_paa)
+      * [GET_ALL_REJECTED_PAA](#get_all_rejected_paa)
+      * [](#)
+      * [](#)
+      * [](#)
+      * [](#)
+      * [](#)
+      * [](#)
+      * [](#)
+      * [](#)
+      * [](#)
+5. [Auth](#auth)
+6. [Validator Node](#validator-node)
+7. [Upgrade](#upgrade)
+
+## [Vendor Info](transactions/vendor-info.md)
+
+### [ADD_VENDOR_INFO](https://github.com/zigbee-alliance/distributed-compliance-ledger/blob/master/docs/transactions/vendor-info.md#add_vendor_info)
+
+#### CLI command
+CLI command: `dcld tx vendorinfo add-vendor --vid=<uint16> --vendorName=<string> --companyLegalName=<string> --companyPreferredName=<string> --vendorLandingPageURL=<string> --from=<account>`
+Test cases:
+* CLI command send
+   * Positive:
+      * command exists/relevant
+   * Negative:
+      * access is denied to execute the command
+      * incorrect command syntax
+* Сommand result
+   * Positive:
+      * ADD_VENDOR_INFO command completed successfully **⇒** adds a record about a Vendor
+   * Negative:
+      * ADD_VENDOR_INFO command failed **⇒** does not add a record about a Vendor
+* Role (Who can send)
+   * Positive:
+      * Vendor (vendor role the matching Vendor ID)
+      * VendorAdmin 
+   * Negative:
+      * Trustee
+      * Vendor (vendor role does not match Vendor ID)
+      * CertificationCenter
+      * NodeAdmin 
+* Parameters:
+   * vid (Vendor ID) - uint16:
+      * Positive:
+         * value exists
+         * value > 0
+         * integer value format
+      * Negative 
+         * empty value
+         * length > MAX (MAX = 65535)
+         * nonexistent ID
+   * vendorName (Vendor name) - string 
+      * Positive:
+         * text value format	
+         * MIN < length < MAX	
+      * Negative 
+         * empty value	
+   * companyLegalName (Company Legal Name) - string 
+      * Positive:
+         * text value format	
+         * MIN < length < MAX	
+      * Negative
+        * empty value	
+   * companyPreferredName (Company Preferred Name)	optional(string)
+      * Positive:
+         * empty value	
+         * text value format	
+         * MIN < length < MAX	
+      * Negative            
+         * length > MAX	
+   * vendorLandingPageURL (Vendor Landing Page URL)	optional(string)
+      * Positive:
+         * value exists	
+         * empty value	
+         * text value format	
+         * MIN < length < MAX	
+      * Negative              
+         * length > MAX	
+         * сontains spaces or line breaks	
+   * schemaVersion (Schema Version)	optional(uint16)
+      * Positive:
+         * value = 0	
+         * integer value format	
+         * empty value	
+      * Negative 	
+         * length > MAX	MAX = 65535
+#### REST API 
+POST: `/cosmos/tx/v1beta1/txs`[NewMsgCreateVendorInfo](https://github.com/zigbee-alliance/distributed-compliance-ledger/blob/master/proto/zigbeealliance/distributedcomplianceledger/vendorinfo/tx.proto#L18)
+Test cases:
+* REST API command send
+   * Positive:
+      * correct HTTP method
+      * request is authorized
+      * uses valid credentials/role
+   * Negative:
+      * incorrect request
+      * server-side error
+* Сommand result
+   * Positive:
+      * ADD_VENDOR_INFO command completed successfully **⇒** adds a record about a Vendor
+   * Negative:
+      * ADD_VENDOR_INFO command failed **⇒** does not add a record about a Vendor
+* Role (Who can send)
+   * Positive:
+      * Vendor (vendor role the matching Vendor ID)
+      * VendorAdmin 
+   * Negative:
+      * Trustee
+      * Vendor (vendor role does not match Vendor ID)
+      * CertificationCenter
+      * NodeAdmin 
+* Parameters:
+   * vid (Vendor ID) - uint16:
+      * Positive:
+         * value exists
+         * value > 0
+         * integer value format
+      * Negative 
+         * empty value
+         * length > MAX (MAX = 65535)
+         * nonexistent ID
+   * vendorName (Vendor name) - string 
+      * Positive:
+         * text value format	
+         * MIN < length < MAX	
+      * Negative 
+         * empty value	
+   * companyLegalName (Company Legal Name) - string 
+      * Positive:
+         * text value format	
+         * MIN < length < MAX	
+      * Negative
+        * empty value	
+   * companyPreferredName (Company Preferred Name) - optional(string)
+      * Positive:
+         * empty value	
+         * text value format	
+         * MIN < length < MAX	
+      * Negative            
+         * length > MAX	
+   * vendorLandingPageURL (Vendor Landing Page URL) - optional(string)
+      * Positive:
+         * value exists	
+         * empty value	
+         * text value format	
+         * MIN < length < MAX	
+      * Negative              
+         * length > MAX	
+         * сontains spaces or line breaks	
+   * schemaVersion (Schema Version) - optional(uint16)
+      * Positive:
+         * value = 0	
+         * integer value format	
+         * empty value	
+      * Negative 	
+         * length > MAX	MAX = 65535
+
+### [UPDATE_VENDOR_INFO](https://github.com/zigbee-alliance/distributed-compliance-ledger/blob/master/docs/transactions/vendor-info.md#update_vendor_info)
+#### CLI command
+CLI command: `dcld tx vendorinfo update-vendor --vid=<uint16> ... --from=<account>`
+Test cases:
+* CLI command send
+   * Positive:
+      * command exists/relevant
+   * Negative:
+      * access is denied to execute the command
+      * incorrect command syntax
+* Сommand result
+   * Positive:
+      * UPDATE_VENDOR_INFO command completed successfully **⇒** updates a record about a Vendor
+         * ADD_VENDOR_INFO command completed successfully
+         * There is at least one record about a Vendor
+   * Negative:
+      * UPDATE_VENDOR_INFO command failed **⇒** does not update a record about a Vendor
+         * ADD_VENDOR_INFO command was not executed
+         * There is no one record about a Vendor
+* Role (Who can send)
+   * Positive:
+      * Vendor (vendor role the matching Vendor ID)
+      * VendorAdmin 
+   * Negative:
+      * Trustee
+      * Vendor (vendor role does not match Vendor ID)
+      * CertificationCenter
+      * NodeAdmin 
+* Parameters:
+   * vid (Vendor ID) - uint16:
+      * Positive:
+         * value exists
+         * value > 0
+         * integer value format
+      * Negative 
+         * empty value
+         * length > MAX (MAX = 65535)
+         * nonexistent ID
+   * vendorName (Vendor name) - string 
+      * Positive:	
+         * text value format	
+         * MIN < length < MAX	
+      * Negative 	
+         * empty value	
+   * companyLegalName (Company Legal Name) - string 
+      * Positive:	
+         * text value format	
+         * MIN < length < MAX	
+      * Negative 	
+         * empty value	
+   * companyPreferredName (Company Preferred Name) - optional(string)
+      * Positive:	
+         * empty value	
+         * text value format	
+         * MIN < length < MAX	
+      * Negative 	
+         * length > MAX	
+   * vendorLandingPageURL (Vendor Landing Page URL) - optional(string)
+      * Positive:	
+         * value exists	
+         * empty value	
+         * text value format	
+         * MIN < length < MAX	
+      * Negative 	
+         * length > MAX	
+         * сontains spaces or line breaks	
+   * schemaVersion (Schema Version) - optional(uint16)
+      * Positive:	
+         * value = 0	
+         * integer value format	
+         * empty value	
+      * Negative 	
+         * length > MAX	MAX = 65535
+#### REST API 
+POST: `/cosmos/tx/v1beta1/txs`[MsgUpdateVendorInfo](https://github.com/zigbee-alliance/distributed-compliance-ledger/blob/master/proto/zigbeealliance/distributedcomplianceledger/vendorinfo/tx.proto#L30)
+Test cases:
+* REST API command send
+   * Positive:
+      * correct HTTP method
+      * request is authorized
+      * uses valid credentials/role
+   * Negative:
+      * incorrect request
+      * server-side error
+* Сommand result
+   * Positive:
+      * UPDATE_VENDOR_INFO command completed successfully **⇒** updates a record about a Vendor
+         * ADD_VENDOR_INFO command completed successfully
+         * There is at least one record about a Vendor
+   * Negative:
+      * UPDATE_VENDOR_INFO command failed **⇒** does not update a record about a Vendor
+         * ADD_VENDOR_INFO command was not executed
+         * There is no one record about a Vendor
+* Role (Who can send)
+   * Positive:
+      * Vendor (vendor role the matching Vendor ID)
+      * VendorAdmin 
+   * Negative:
+      * Trustee
+      * Vendor (vendor role does not match Vendor ID)
+      * CertificationCenter
+      * NodeAdmin 
+* Parameters:
+   * vid (Vendor ID) - uint16:
+      * Positive:
+         * value exists
+         * value > 0
+         * integer value format
+      * Negative 
+         * empty value
+         * length > MAX (MAX = 65535)
+         * nonexistent ID
+   * vendorName (Vendor name) - string 
+      * Positive:	
+         * text value format	
+         * MIN < length < MAX	
+      * Negative 	
+         * empty value	
+   * companyLegalName (Company Legal Name) - string 
+      * Positive:	
+         * text value format	
+         * MIN < length < MAX	
+      * Negative 	
+         * empty value	
+   * companyPreferredName (Company Preferred Name) - optional(string)
+      * Positive:	
+         * empty value	
+         * text value format	
+         * MIN < length < MAX	
+      * Negative 	
+         * length > MAX	
+   * vendorLandingPageURL (Vendor Landing Page URL) - optional(string)
+      * Positive:	
+         * value exists	
+         * empty value	
+         * text value format	
+         * MIN < length < MAX	
+      * Negative 	
+         * length > MAX	
+         * сontains spaces or line breaks	
+   * schemaVersion (Schema Version) - optional(uint16)
+      * Positive:	
+         * value = 0	
+         * integer value format	
+         * empty value	
+      * Negative 	
+         * length > MAX	MAX = 65535
+### [GET_VENDOR_INFO](https://github.com/zigbee-alliance/distributed-compliance-ledger/blob/master/docs/transactions/vendor-info.md#get_vendor_info)
+#### CLI command
+CLI command: `dcld query vendorinfo vendor --vid=<uint16>`
+Test cases:
+* CLI command send
+   * Positive:
+      * command exists/relevant
+   * Negative:
+      * access is denied to execute the command
+      * incorrect command syntax
+* Сommand result
+   * Positive:
+      * GET_VENDOR_INFO command completed successfully **⇒** gets a Vendor Info for the given vid (vendor ID)
+         * there is at least one Vendor Info for the given vid (vendor ID)
+   * Negative:
+      * GET_VENDOR_INFO command failed **⇒** does not gets a Vendor Info for the given vid (vendor ID)
+         * there is not one Vendor Info for the given vid (vendor ID)
+* Role (Who can send)
+   * Positive:
+      * Vendor (vendor role the matching Vendor ID)
+      * VendorAdmin 
+   * Negative:
+      * Trustee
+      * Vendor 
+      * VendorAdmin 
+      * CertificationCenter 
+      * NodeAdmin 
+* Parameters:
+   * vid (Vendor ID) - uint16:
+      * Positive:
+         * value exists
+         * value > 0
+         * integer value format
+      * Negative 
+         * empty value
+         * length > MAX (MAX = 65535)
+         * nonexistent ID
+#### REST API 
+GET: `/dcl/vendorinfo/vendors/{vid}`
+Test cases:
+* REST API command send
+   * Positive:
+      * correct HTTP method
+      * request is authorized
+      * uses valid credentials/role
+   * Negative:
+      * incorrect request
+      * server side error
+* Сommand result
+   * Positive:
+      * GET_VENDOR_INFO command completed successfully **⇒** gets a Vendor Info for the given vid (vendor ID)
+         * there is at least one Vendor Info for the given vid (vendor ID)
+   * Negative:
+      * GET_VENDOR_INFO command failed **⇒** does not gets a Vendor Info for the given vid (vendor ID)
+         * there is not one Vendor Info for the given vid (vendor ID)
+* Role (Who can send)
+   * Positive:
+      * Vendor (vendor role the matching Vendor ID)
+      * VendorAdmin 
+   * Negative:
+      * Trustee
+      * Vendor 
+      * VendorAdmin 
+      * CertificationCenter 
+      * NodeAdmin 
+* Parameters:
+   * vid (Vendor ID) - uint16:
+      * Positive:
+         * value exists
+         * value > 0
+         * integer value format
+      * Negative 
+         * empty value
+         * length > MAX (MAX = 65535)
+         * nonexistent ID
+### [GET_ALL_VENDOR_INFO](https://github.com/zigbee-alliance/distributed-compliance-ledger/blob/master/docs/transactions/vendor-info.md#get_all_vendor_info)
+#### CLI command
+CLI command: `dcld query vendorinfo all-vendors`
+Test cases:
+* CLI command send
+   * Positive:
+      * command exists/relevant
+   * Negative:
+      * access is denied to execute the command
+      * incorrect command syntax
+* Сommand result
+   * Positive:
+      * GET_ALL_VENDOR_INFO command completed successfully **⇒** gets information about all vendors for all VIDs
+         * there is at least one Vendor for all VIDs
+   * Negative:
+      * GET_ALL_VENDOR_INFO command failed **⇒** does not information about all vendors for all VIDs
+         * there is not one  Vendor for all VIDs
+* Role (Who can send)
+   * Positive:
+      * Trustee
+      * Vendor 
+      * VendorAdmin 
+      * CertificationCenter 
+      * NodeAdmin 
+* Parameters:
+   * count-total - optional(bool)
+      * Positive:
+         * empty value
+         * value state
+            * TRUE (-1)
+            * FALSE (0)
+      * Negative 
+         * value is not bool
+   * limit - optional(uint)
+      * Positive:	
+         * value exists	
+         * empty value	
+      * Negative	
+         * value > 100	
+   * offset - optional(uint)
+      * Positive:	
+         * value exists	
+         * empty value	
+      * Negative	
+         * value < 0	
+   * page - optional(uint)
+      * Positive:	
+         * value exists	
+         * empty value	
+      * Negative	
+         * value < 0	
+   * page-key - optional(string)
+      * Positive:	
+         * empty value	
+         * value exists	
+      * Negative	
+         * length < MIN	
+   * reverse - optional(bool)
+      * Positive:	
+         * empty value	
+         * value state	
+            * TRUE (-1)	
+            * FALSE (0)	
+      * Negative	
+         * value is not bool	
+#### REST API 
+GET: `/dcl/vendorinfo/vendors`
+Test cases:
+* REST API command send
+   * Positive:
+      * correct HTTP method
+      * request is authorized
+      * uses valid credentials/role
+   * Negative:
+      * incorrect request
+      * server side error
+* Сommand result
+   * Positive:
+      * GET_ALL_VENDOR_INFO command completed successfully **⇒** gets information about all vendors for all VIDs
+         * there is at least one Vendor for all VIDs
+   * Negative:
+      * GET_ALL_VENDOR_INFO command failed **⇒** does not information about all vendors for all VIDs
+         * there is not one  Vendor for all VIDs
+* Role (Who can send)
+   * Positive:
+      * Trustee
+      * Vendor 
+      * VendorAdmin 
+      * CertificationCenter 
+      * NodeAdmin 
+* Parameters:
+   * count-total - optional(bool)
+      * Positive:
+         * empty value
+         * value state
+            * TRUE (-1)
+            * FALSE (0)
+      * Negative 
+         * value is not bool
+   * limit - optional(uint)
+      * Positive:	
+         * value exists	
+         * empty value	
+      * Negative	
+         * value > 100	
+   * offset - optional(uint)
+      * Positive:	
+         * value exists	
+         * empty value	
+      * Negative	
+         * value < 0	
+   * page - optional(uint)
+      * Positive:	
+         * value exists	
+         * empty value	
+      * Negative	
+         * value < 0	
+   * page-key - optional(string)
+      * Positive:	
+         * empty value	
+         * value exists	
+      * Negative	
+         * length < MIN	
+   * reverse - optional(bool)
+      * Positive:	
+         * empty value	
+         * value state	
+            * TRUE (-1)	
+            * FALSE (0)	
+      * Negative	
+         * value is not bool	
+
+## Vendor Info
+### [ADD_VENDOR_INFO](https://github.com/zigbee-alliance/distributed-compliance-ledger/blob/master/docs/transactions/vendor-info.md#add_vendor_info)
+#### CLI command
+CLI command: `dcld tx vendorinfo add-vendor --vid=<uint16> --vendorName=<string> --companyLegalName=<string> --companyPreferredName=<string> --vendorLandingPageURL=<string> --from=<account>`
+Test cases:
+* CLI command send
+   * Positive:
+      * command exists/relevant
+   * Negative:
+      * access is denied to execute the command
+      * incorrect command syntax
+* Сommand result
+   * Positive:
+      * ADD_VENDOR_INFO command completed successfully **⇒** adds a record about a Vendor
+   * Negative:
+      * ADD_VENDOR_INFO command failed **⇒** does not add a record about a Vendor
+* Role (Who can send)
+   * Positive:
+      * Vendor (vendor role the matching Vendor ID)
+      * VendorAdmin 
+   * Negative:
+      * Trustee
+      * Vendor (vendor role does not match Vendor ID)
+      * CertificationCenter
+      * NodeAdmin 
+* Parameters:
+   * vid (Vendor ID) - uint16:
+      * Positive:
+         * value exists
+         * value > 0
+         * integer value format
+      * Negative 
+         * empty value
+         * length > MAX (MAX = 65535)
+         * nonexistent ID
+
+
 ## Add DA Root
 
 ### [Propose adding of DA root certificate](./handler_propose_paa_cert_test.go)
