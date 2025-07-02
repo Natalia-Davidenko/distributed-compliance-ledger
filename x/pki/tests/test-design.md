@@ -146,12 +146,15 @@ CLI command: `dcld tx vendorinfo add-vendor --vid=<uint16> --vendorName=<string>
       * command exists/relevant
    * Negative:
       * access is denied to execute the command
+      * multiple commands are sent with the same Vendor ID
       * incorrect command syntax
+
 * Сommand result
    * Positive:
       * ADD_VENDOR_INFO command completed successfully **⇒** adds a record about a Vendor
    * Negative:
       * ADD_VENDOR_INFO command failed **⇒** does not add a record about a Vendor
+ 
 * Role (Who can send)
    * Positive:
       * Vendor (vendor role the matching Vendor ID)
@@ -160,7 +163,8 @@ CLI command: `dcld tx vendorinfo add-vendor --vid=<uint16> --vendorName=<string>
       * Trustee
       * Vendor (vendor role does not match Vendor ID)
       * CertificationCenter
-      * NodeAdmin 
+      * NodeAdmin
+  
 * Parameters:
    * vid (Vendor ID) - uint16:
       * Positive:
@@ -173,25 +177,31 @@ CLI command: `dcld tx vendorinfo add-vendor --vid=<uint16> --vendorName=<string>
          * string value format
          * length > MAX (MAX = 65535)
          * nonexistent ID
+   
    * vendorName (Vendor name) - string 
       * Positive:
          * text value format	
          * MIN < length < MAX	
       * Negative 
-         * empty value	
+         * empty value
+         * length > MAX
+      
    * companyLegalName (Company Legal Name) - string 
       * Positive:
          * text value format	
          * MIN < length < MAX	
       * Negative
         * empty value	
+        * length > MAX
+
    * companyPreferredName (Company Preferred Name)	optional(string)
       * Positive:
          * empty value	
          * text value format	
          * MIN < length < MAX	
       * Negative            
-         * length > MAX	
+         * length > MAX
+       
    * vendorLandingPageURL (Vendor Landing Page URL)	optional(string)
       * Positive:
          * value exists	
@@ -200,14 +210,16 @@ CLI command: `dcld tx vendorinfo add-vendor --vid=<uint16> --vendorName=<string>
          * MIN < length < MAX	
       * Negative              
          * length > MAX	
-         * сontains spaces or line breaks	
+         * сontains spaces or line breaks
+   
    * schemaVersion (Schema Version)	optional(uint16)
       * Positive:
          * value = 0	
          * integer value format	
          * empty value	
       * Negative 	
-         * length > MAX	MAX = 65535
+         * length > MAX	(MAX = 65535)
+
 #### REST API 
 POST: `/cosmos/tx/v1beta1/txs`[NewMsgCreateVendorInfo](https://github.com/zigbee-alliance/distributed-compliance-ledger/blob/master/proto/zigbeealliance/distributedcomplianceledger/vendorinfo/tx.proto#L18)
 
@@ -218,12 +230,15 @@ POST: `/cosmos/tx/v1beta1/txs`[NewMsgCreateVendorInfo](https://github.com/zigbee
       * uses valid credentials/role
    * Negative:
       * incorrect request
+      * multiple commands are sent with the same Vendor ID
       * server-side error
+
 * Сommand result
    * Positive:
       * ADD_VENDOR_INFO command completed successfully **⇒** adds a record about a Vendor
    * Negative:
       * ADD_VENDOR_INFO command failed **⇒** does not add a record about a Vendor
+
 * Role (Who can send)
    * Positive:
       * Vendor (vendor role the matching Vendor ID)
@@ -233,7 +248,9 @@ POST: `/cosmos/tx/v1beta1/txs`[NewMsgCreateVendorInfo](https://github.com/zigbee
       * Vendor (vendor role does not match Vendor ID)
       * CertificationCenter
       * NodeAdmin 
+
 * Parameters:
+   
    * vid (Vendor ID) - uint16:
       * Positive:
          * value exists
@@ -245,18 +262,23 @@ POST: `/cosmos/tx/v1beta1/txs`[NewMsgCreateVendorInfo](https://github.com/zigbee
          * string value format
          * length > MAX (MAX = 65535)
          * nonexistent ID
+   
    * vendorName (Vendor name) - string 
       * Positive:
          * text value format	
          * MIN < length < MAX	
       * Negative 
          * empty value	
+         * length > MAX	
+
    * companyLegalName (Company Legal Name) - string 
       * Positive:
          * text value format	
          * MIN < length < MAX	
       * Negative
         * empty value	
+        * length > MAX	
+
    * companyPreferredName (Company Preferred Name) - optional(string)
       * Positive:
          * empty value	
@@ -264,6 +286,7 @@ POST: `/cosmos/tx/v1beta1/txs`[NewMsgCreateVendorInfo](https://github.com/zigbee
          * MIN < length < MAX	
       * Negative            
          * length > MAX	
+   
    * vendorLandingPageURL (Vendor Landing Page URL) - optional(string)
       * Positive:
          * value exists	
@@ -273,13 +296,14 @@ POST: `/cosmos/tx/v1beta1/txs`[NewMsgCreateVendorInfo](https://github.com/zigbee
       * Negative              
          * length > MAX	
          * сontains spaces or line breaks	
+   
    * schemaVersion (Schema Version) - optional(uint16)
       * Positive:
          * value = 0	
          * integer value format	
          * empty value	
       * Negative 	
-         * length > MAX	MAX = 65535
+         * length > MAX	(MAX = 65535)
 
 ### [UPDATE_VENDOR_INFO](https://github.com/zigbee-alliance/distributed-compliance-ledger/blob/master/docs/transactions/vendor-info.md#update_vendor_info)
 #### CLI command
@@ -291,6 +315,7 @@ CLI command: `dcld tx vendorinfo update-vendor --vid=<uint16> ... --from=<accoun
    * Negative:
       * access is denied to execute the command
       * incorrect command syntax
+
 * Сommand result
    * Positive:
       * UPDATE_VENDOR_INFO command completed successfully **⇒** updates a record about a Vendor
@@ -300,6 +325,7 @@ CLI command: `dcld tx vendorinfo update-vendor --vid=<uint16> ... --from=<accoun
       * UPDATE_VENDOR_INFO command failed **⇒** does not update a record about a Vendor
          * ADD_VENDOR_INFO command was not executed
          * There is no one record about a Vendor
+
 * Role (Who can send)
    * Positive:
       * Vendor (vendor role the matching Vendor ID)
@@ -309,7 +335,9 @@ CLI command: `dcld tx vendorinfo update-vendor --vid=<uint16> ... --from=<accoun
       * Vendor (vendor role does not match Vendor ID)
       * CertificationCenter
       * NodeAdmin 
+
 * Parameters:
+   
    * vid (Vendor ID) - uint16:
       * Positive:
          * value exists
@@ -321,6 +349,7 @@ CLI command: `dcld tx vendorinfo update-vendor --vid=<uint16> ... --from=<accoun
          * string value format
          * length > MAX (MAX = 65535)
          * nonexistent ID
+   
    * vendorName (Vendor name) - string 
       * Positive:	
          * text value format	
@@ -333,6 +362,7 @@ CLI command: `dcld tx vendorinfo update-vendor --vid=<uint16> ... --from=<accoun
          * MIN < length < MAX	
       * Negative 	
          * empty value	
+   
    * companyPreferredName (Company Preferred Name) - optional(string)
       * Positive:	
          * empty value	
@@ -340,6 +370,7 @@ CLI command: `dcld tx vendorinfo update-vendor --vid=<uint16> ... --from=<accoun
          * MIN < length < MAX	
       * Negative 	
          * length > MAX	
+   
    * vendorLandingPageURL (Vendor Landing Page URL) - optional(string)
       * Positive:	
          * value exists	
@@ -349,13 +380,15 @@ CLI command: `dcld tx vendorinfo update-vendor --vid=<uint16> ... --from=<accoun
       * Negative 	
          * length > MAX	
          * сontains spaces or line breaks	
+   
    * schemaVersion (Schema Version) - optional(uint16)
       * Positive:	
          * value = 0	
          * integer value format	
          * empty value	
       * Negative 	
-         * length > MAX	MAX = 65535
+         * length > MAX	(MAX = 65535)
+
 #### REST API 
 POST: `/cosmos/tx/v1beta1/txs`[MsgUpdateVendorInfo](https://github.com/zigbee-alliance/distributed-compliance-ledger/blob/master/proto/zigbeealliance/distributedcomplianceledger/vendorinfo/tx.proto#L30)
 
@@ -367,6 +400,7 @@ POST: `/cosmos/tx/v1beta1/txs`[MsgUpdateVendorInfo](https://github.com/zigbee-al
    * Negative:
       * incorrect request
       * server-side error
+
 * Сommand result
    * Positive:
       * UPDATE_VENDOR_INFO command completed successfully **⇒** updates a record about a Vendor
@@ -376,6 +410,7 @@ POST: `/cosmos/tx/v1beta1/txs`[MsgUpdateVendorInfo](https://github.com/zigbee-al
       * UPDATE_VENDOR_INFO command failed **⇒** does not update a record about a Vendor
          * ADD_VENDOR_INFO command was not executed
          * There is no one record about a Vendor
+
 * Role (Who can send)
    * Positive:
       * Vendor (vendor role the matching Vendor ID)
@@ -385,6 +420,7 @@ POST: `/cosmos/tx/v1beta1/txs`[MsgUpdateVendorInfo](https://github.com/zigbee-al
       * Vendor (vendor role does not match Vendor ID)
       * CertificationCenter
       * NodeAdmin 
+
 * Parameters:
    * vid (Vendor ID) - uint16:
       * Positive:
@@ -397,18 +433,21 @@ POST: `/cosmos/tx/v1beta1/txs`[MsgUpdateVendorInfo](https://github.com/zigbee-al
          * string value format
          * length > MAX (MAX = 65535)
          * nonexistent ID
+   
    * vendorName (Vendor name) - string 
       * Positive:	
          * text value format	
          * MIN < length < MAX	
       * Negative 	
          * empty value	
+   
    * companyLegalName (Company Legal Name) - string 
       * Positive:	
          * text value format	
          * MIN < length < MAX	
       * Negative 	
          * empty value	
+   
    * companyPreferredName (Company Preferred Name) - optional(string)
       * Positive:	
          * empty value	
@@ -416,6 +455,7 @@ POST: `/cosmos/tx/v1beta1/txs`[MsgUpdateVendorInfo](https://github.com/zigbee-al
          * MIN < length < MAX	
       * Negative 	
          * length > MAX	
+   
    * vendorLandingPageURL (Vendor Landing Page URL) - optional(string)
       * Positive:	
          * value exists	
@@ -425,13 +465,15 @@ POST: `/cosmos/tx/v1beta1/txs`[MsgUpdateVendorInfo](https://github.com/zigbee-al
       * Negative 	
          * length > MAX	
          * сontains spaces or line breaks	
+   
    * schemaVersion (Schema Version) - optional(uint16)
       * Positive:	
          * value = 0	
          * integer value format	
          * empty value	
       * Negative 	
-         * length > MAX	MAX = 65535
+         * length > MAX	(MAX = 65535)
+
 ### [GET_VENDOR_INFO](https://github.com/zigbee-alliance/distributed-compliance-ledger/blob/master/docs/transactions/vendor-info.md#get_vendor_info)
 #### CLI command
 CLI command: `dcld query vendorinfo vendor --vid=<uint16>`
@@ -440,8 +482,8 @@ CLI command: `dcld query vendorinfo vendor --vid=<uint16>`
    * Positive:
       * command exists/relevant
    * Negative:
-      * access is denied to execute the command
       * incorrect command syntax
+
 * Сommand result
    * Positive:
       * GET_VENDOR_INFO command completed successfully **⇒** gets a Vendor Info for the given vid (vendor ID)
@@ -449,16 +491,15 @@ CLI command: `dcld query vendorinfo vendor --vid=<uint16>`
    * Negative:
       * GET_VENDOR_INFO command failed **⇒** does not gets a Vendor Info for the given vid (vendor ID)
          * there is not one Vendor Info for the given vid (vendor ID)
+
 * Role (Who can send)
    * Positive:
-      * Vendor (vendor role the matching Vendor ID)
-      * VendorAdmin 
-   * Negative:
       * Trustee
       * Vendor 
       * VendorAdmin 
       * CertificationCenter 
       * NodeAdmin 
+
 * Parameters:
    * vid (Vendor ID) - uint16:
       * Positive:
@@ -471,6 +512,7 @@ CLI command: `dcld query vendorinfo vendor --vid=<uint16>`
          * string value format
          * length > MAX (MAX = 65535)
          * nonexistent ID
+
 #### REST API 
 GET: `/dcl/vendorinfo/vendors/{vid}`
 
@@ -482,6 +524,7 @@ GET: `/dcl/vendorinfo/vendors/{vid}`
    * Negative:
       * incorrect request
       * server side error
+
 * Сommand result
    * Positive:
       * GET_VENDOR_INFO command completed successfully **⇒** gets a Vendor Info for the given vid (vendor ID)
@@ -489,16 +532,15 @@ GET: `/dcl/vendorinfo/vendors/{vid}`
    * Negative:
       * GET_VENDOR_INFO command failed **⇒** does not gets a Vendor Info for the given vid (vendor ID)
          * there is not one Vendor Info for the given vid (vendor ID)
+
 * Role (Who can send)
    * Positive:
-      * Vendor (vendor role the matching Vendor ID)
-      * VendorAdmin 
-   * Negative:
       * Trustee
       * Vendor 
       * VendorAdmin 
       * CertificationCenter 
       * NodeAdmin 
+
 * Parameters:
    * vid (Vendor ID) - uint16:
       * Positive:
@@ -511,6 +553,7 @@ GET: `/dcl/vendorinfo/vendors/{vid}`
          * string value format
          * length > MAX (MAX = 65535)
          * nonexistent ID
+
 ### [GET_ALL_VENDOR_INFO](https://github.com/zigbee-alliance/distributed-compliance-ledger/blob/master/docs/transactions/vendor-info.md#get_all_vendor_info)
 #### CLI command
 CLI command: `dcld query vendorinfo all-vendors`
@@ -519,8 +562,9 @@ CLI command: `dcld query vendorinfo all-vendors`
    * Positive:
       * command exists/relevant
    * Negative:
-      * access is denied to execute the command
       * incorrect command syntax
+      * queries are performed through a Light Client Proxy
+
 * Сommand result
    * Positive:
       * GET_ALL_VENDOR_INFO command completed successfully **⇒** gets information about all vendors for all VIDs
@@ -528,6 +572,7 @@ CLI command: `dcld query vendorinfo all-vendors`
    * Negative:
       * GET_ALL_VENDOR_INFO command failed **⇒** does not information about all vendors for all VIDs
          * there is not one  Vendor for all VIDs
+
 * Role (Who can send)
    * Positive:
       * Trustee
@@ -535,7 +580,9 @@ CLI command: `dcld query vendorinfo all-vendors`
       * VendorAdmin 
       * CertificationCenter 
       * NodeAdmin 
+
 * Parameters:
+   
    * count-total - optional(bool)
       * Positive:
          * empty value
@@ -544,30 +591,35 @@ CLI command: `dcld query vendorinfo all-vendors`
             * FALSE (0)
       * Negative 
          * value is not bool
+   
    * limit - optional(uint)
       * Positive:	
          * value exists	
          * empty value	
       * Negative	
          * value > 100	
+   
    * offset - optional(uint)
       * Positive:	
          * value exists	
          * empty value	
       * Negative	
          * value < 0	
+   
    * page - optional(uint)
       * Positive:	
          * value exists	
          * empty value	
       * Negative	
          * value < 0	
+   
    * page-key - optional(string)
       * Positive:	
          * empty value	
          * value exists	
       * Negative	
          * length < MIN	
+   
    * reverse - optional(bool)
       * Positive:	
          * empty value	
@@ -576,6 +628,7 @@ CLI command: `dcld query vendorinfo all-vendors`
             * FALSE (0)	
       * Negative	
          * value is not bool	
+
 #### REST API 
 GET: `/dcl/vendorinfo/vendors`
 
@@ -586,7 +639,9 @@ GET: `/dcl/vendorinfo/vendors`
       * uses valid credentials/role
    * Negative:
       * incorrect request
+      * queries are performed through a Light Client Proxy
       * server side error
+
 * Сommand result
    * Positive:
       * GET_ALL_VENDOR_INFO command completed successfully **⇒** gets information about all vendors for all VIDs
@@ -594,6 +649,7 @@ GET: `/dcl/vendorinfo/vendors`
    * Negative:
       * GET_ALL_VENDOR_INFO command failed **⇒** does not information about all vendors for all VIDs
          * there is not one  Vendor for all VIDs
+
 * Role (Who can send)
    * Positive:
       * Trustee
@@ -601,7 +657,9 @@ GET: `/dcl/vendorinfo/vendors`
       * VendorAdmin 
       * CertificationCenter 
       * NodeAdmin 
+
 * Parameters:
+   
    * count-total - optional(bool)
       * Positive:
          * empty value
@@ -610,12 +668,14 @@ GET: `/dcl/vendorinfo/vendors`
             * FALSE (0)
       * Negative 
          * value is not bool
+   
    * limit - optional(uint)
       * Positive:	
          * value exists	
          * empty value	
       * Negative	
          * value > 100	
+   
    * offset - optional(uint)
       * Positive:	
          * value exists	
@@ -628,12 +688,14 @@ GET: `/dcl/vendorinfo/vendors`
          * empty value	
       * Negative	
          * value < 0	
+   
    * page-key - optional(string)
       * Positive:	
          * empty value	
          * value exists	
       * Negative	
          * length < MIN	
+   
    * reverse - optional(bool)
       * Positive:	
          * empty value	
@@ -658,13 +720,16 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
    * Positive:
       * command exists/relevant	
    * Negative:	
-      * access is denied to execute command	
+      * access is denied to execute command
+      * multiple commands are sent with the same unique combination of vid (vendor ID) and pid (product ID)	
       * incorrect command syntax	
+
 * Сommand result	
   * Positive:
       * ADD_MODEL command completed successfully	**⇒** adds a new Model identified by a unique combination of vid (vendor ID) and pid (product ID)
    * Negative:	
       * ADD_MODEL command failed	**⇒** does not add a new Model identified by a unique combination of vid (vendor ID) and pid (product ID)
+
 * Role (Who can send)
    * Positive:
       * Vendor (Vendor account associated with the given Vendor ID)
@@ -674,7 +739,9 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
       * VendorAdmin 	
       * CertificationCenter 	
       * NodeAdmin 	
+
 * Parameters:	
+   
    * vid (Vendor ID) - uint16 
      * Positive:
        * unique combination	
@@ -686,6 +753,7 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
        * value =< 0
        * string value format
        * length > MAX	(MAX = 65535)
+   
    * pid (Product ID) - uint16 
      * Positive:
        * unique combination	
@@ -697,7 +765,8 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
        * empty value
        * value =< 0
        * string value format	
-       * length > MAX	MAX = 65535
+       * length > MAX	(MAX = 65535)
+   
    * deviceTypeID (Device Type ID) - uint16 
      * Positive:
        * value exists	
@@ -707,6 +776,7 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
        * empty value	
        * length > MAX	(MAX = 65535)
        * nonexistent ID	
+   
    * productName (Product Name) - string 
      * Positive:
        * text value format	
@@ -714,6 +784,7 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
      * Negative:
        * empty value	
        * length > MAX	
+   
    * productLabel (Product Label) - optional(string)
      * Positive:
        * empty value	
@@ -722,6 +793,7 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
      * Negative:
        * length > MAX	
        * path/string format does not match	
+   
    * partNumber (Part Number) - optional(string)
      * Positive:
        * empty value	
@@ -729,6 +801,7 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
        * MIN < length < MAX	
      * Negative:
        * length > MAX	
+   
    * commissioningCustomFlow (Commissioning Custom Flow) - optional(uint8)
      * Positive:
        * value exists	
@@ -737,8 +810,9 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
          * 1: User interaction with the device (pressing a button, for example) is required before commissioning can take place.
          * 2: The commissioner SHOULD attempt to obtain a URL which MAY be used to provide an end user with the necessary details for how to configure the product for initial commissioning 
      * Negative:
-       * length > MAX	MAX = 255
+       * length > MAX	(MAX = 255)
        * nonexistent value	
+   
    * commissioningCustomFlowURL (Commissioning Custom Flow URL) - optional(string)
        * commissioningCustomFlow value = '2'	
          * Positive:
@@ -757,6 +831,7 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
          * Negative:
            * length > MAX	
            * сontains spaces or line breaks	
+   
    * commissioningModeInitialStepsHint (Commissioning Mode Initial Steps Hint) - optional(uint32)
      * Positive:
       * value exists	
@@ -764,7 +839,7 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
       * integer value format
      * Negative:
       * empty value	
-      * length > MAX	MAX = 4 294 967 295
+      * length > MAX	(MAX = 4 294 967 295)
       * value does not match Pairing Hint table	
    * commissioningModeInitialStepsInstruction (Commissioning Mode Initial Steps Instruction) - optional(string)
      * Positive:
@@ -774,6 +849,7 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
       * MIN < length < MAX	
      * Negative:
       * length > MAX	
+   
    * commissioningModeSecondaryStepsHint (Commissioning Mode Secondary Steps Hint) - optional(uint32)
      * Positive:
       * value exists	
@@ -783,6 +859,7 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
       * empty value	
       * length > MAX	(MAX = 4 294 967 295)
       * inappropriate value: commissioning ModeInitialStepsInstruction text does not match selected commissioningModeInitialStepsHint value
+   
    * commissioningModeSecondaryStepInstruction (Commissioning Mode Secondary Step Instruction) - optional(string)
      * Positive:
       * value exists	
@@ -792,6 +869,7 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
      * Negative:
       * length > MAX	
       * value does not match Pairing Hint table	
+   
    * userManualURL (User Manual URL) - optional(string)
      * Positive:
       * value exists	
@@ -802,6 +880,7 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
       * length > MAX	
       * сontains spaces or line breaks	
       * User Manual URL does not match Device Type ID	
+   
    * supportURL (Support URL) - optional(string)
      * Positive:
       * value exists	
@@ -812,6 +891,7 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
       * length > MAX	
       * сontains spaces or line breaks	
       * Support URL does not match Device Type ID	
+   
    * productURL (Product URL) - optional(string)
      * Positive:
       * value exists	
@@ -822,6 +902,7 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
       * length > MAX	
       * сontains spaces or line breaks	
       * Product URL does not match Device Type ID	
+   
    * lsfURL (Localized String File URL) - optional(string)
      * Positive:
       * value exists	
@@ -832,13 +913,15 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
       * length > MAX	
       * сontains spaces or line breaks	
       * Localized String File URL does not match Device Type ID	
+   
    * enhancedSetupFlowOptions (Enhanced Setup Flow Options) - optional(uint16)
      * Positive:
       * value >= 0	
       * integer value format
       * empty value	
      * Negative:
-      * length > MAX	MAX = 65535
+      * length > MAX	(MAX = 65535)
+   
    * enhancedSetupFlowTCUrl (Enhanced Setup Flow  Terms and Condition URL) - optional(string)
       * EnhancedSetupFlowOptions field has bit 0 set	
         * Positive:
@@ -850,7 +933,8 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
           * length > MAX	
           * сontains spaces or line breaks	
           * enhancedSetupFlowTCUrl does not match Device Type ID	
-      * EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+      * EnhancedSetupFlowOptions field has bit not equal to 0 set: enhancedSetupFlowTCUrl field should not be present in the command	
+   
    * enhancedSetupFlowTCRevision (Enhanced Setup Flow Terms and Conditions Revision) - optional(uint16)
       * EnhancedSetupFlowOptions field has bit 0 set	
         * Positive:
@@ -859,9 +943,10 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
           * integer value format
           * empty value	
         * Negative:
-          * length > MAX	MAX = 65535
+          * length > MAX	(MAX = 65535)
           * new value < previous value	
-      * EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+      * EnhancedSetupFlowOptions field has bit not equal to 0 set: enhancedSetupFlowTCRevision field should not be present in the command
+   
    * enhancedSetupFlowTCDigest (Enhanced Setup Flow Terms and Conditions Digest) - optional(string)
       * EnhancedSetupFlowOptions field has bit 0 set	
         * Positive:
@@ -871,8 +956,9 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
           * MIN < length < MAX	
         * Negative:
           * length > MAX	
-          * inappropriate value	
-      * EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+          * inappropriate value: digest does not match the file uploaded from the EnhancedSetupFlowTCUrl field 	
+      * EnhancedSetupFlowOptions field has bit not equal to 0 set: enhancedSetupFlowTCDigest field should not be present in the command	
+   
    * enhancedSetupFlowTCFileSize (Enhanced Setup Flow Terms and Conditions File Size) - optional(uint32)
       * EnhancedSetupFlowOptions field has bit 0 set	
         * Positive:
@@ -882,9 +968,10 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
           * unit of measurement = bytes	
         * Negative:
           * empty value	
-          * length > MAX	MAX = 4 294 967 295
+          * length > MAX	(MAX = 4 294 967 295)
           * enhancedSetupFlowTC file size >  EnhancedSetupFlowTCFileSize limit	
-      * EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+      * EnhancedSetupFlowOptions field has bit not equal to 0 set: enhancedSetupFlowTCFileSize field should not be present in the command
+   
    * maintenanceUrl (Maintenance URL)	optional(string)
       * EnhancedSetupFlowOptions field has bit 0 set	
         * Positive:
@@ -894,14 +981,16 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
           * MIN < length < MAX	
         * Negative:
           * length > MAX	
-      * EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+      * EnhancedSetupFlowOptions field has bit not equal to 0 set: maintenanceUrl field should not be present in the command	
+   
    * schemaVersion (Schema Version) - optional(uint16)
      * Positive:
        * value = 0	
        * integer value format
        * empty value	
      * Negative:
-       * length > MAX	MAX = 65535
+       * length > MAX	(MAX = 65535)
+   
    * discoveryCapabilitiesBitmask (Discovery Capabilities Bitmask) - optional(uint16)
      * commissioningFallbackURL field is filled	
        * Positive:
@@ -909,8 +998,9 @@ CLI command full: `dcld tx model add-model --vid=<uint16> --pid=<uint16> --devic
          * integer value format
          * empty value	
        * Negative:
-         * length > MAX	MAX = 65535
+         * length > MAX	(MAX = 65535)
      * commissioningFallbackURL field is not filled	
+   
    * commissioningFallbackURL (Commissioning Fallback URL) - optional(string)
      * Positive:
        * value exists	
@@ -931,12 +1021,15 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
       * uses valid credentials/role	
   * Negative:
       * incorrect request	
+      * multiple commands are sent with the same unique combination of vid (vendor ID) and pid (product ID)	
       * server-side error	
+
 * Сommand result	
   * Positive:
       * ADD_MODEL command completed successfully	**⇒** adds a new Model identified by a unique combination of vid (vendor ID) and pid (product ID)
    * Negative:	
       * ADD_MODEL command failed	**⇒** does not add a new Model identified by a unique combination of vid (vendor ID) and pid (product ID)
+
 * Role (Who can send)
    * Positive:
       * Vendor (Vendor account associated with the given Vendor ID)
@@ -946,7 +1039,9 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
       * VendorAdmin 	
       * CertificationCenter 	
       * NodeAdmin 	
+
 * Parameters:	
+   
    * vid (Vendor ID) - uint16 
      * Positive:
        * unique combination	
@@ -956,6 +1051,7 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
      * Negative:
        * empty value	
        * length > MAX	(MAX = 65535)
+
    * pid (Product ID) - uint16 
      * Positive:
        * unique combination	
@@ -965,7 +1061,8 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
        * value falls within the specified range
      * Negative:
        * empty value	
-       * length > MAX	MAX = 65535
+       * length > MAX	(MAX = 65535)
+
    * deviceTypeID (Device Type ID) - uint16 
      * Positive:
        * value exists	
@@ -975,6 +1072,7 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
        * empty value	
        * length > MAX	(MAX = 65535)
        * nonexistent ID	
+
    * productName (Product Name) - string 
      * Positive:
        * text value format	
@@ -982,6 +1080,7 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
      * Negative:
        * empty value	
        * length > MAX	
+   
    * productLabel (Product Label) - optional(string)
      * Positive:
        * empty value	
@@ -990,6 +1089,7 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
      * Negative:
        * length > MAX	
        * path/string format does not match	
+   
    * partNumber (Part Number) - optional(string)
      * Positive:
        * empty value	
@@ -997,6 +1097,7 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
        * MIN < length < MAX	
      * Negative:
        * length > MAX	
+   
    * commissioningCustomFlow (Commissioning Custom Flow) - optional(uint8)
      * Positive:
        * value exists	
@@ -1005,8 +1106,9 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
          * 1: User interaction with the device (pressing a button, for example) is required before commissioning can take place.
          * 2: The commissioner SHOULD attempt to obtain a URL which MAY be used to provide an end user with the necessary details for how to configure the product for initial commissioning 
      * Negative:
-       * length > MAX	MAX = 255
+       * length > MAX	(MAX = 255)
        * nonexistent value	
+   
    * commissioningCustomFlowURL (Commissioning Custom Flow URL) - optional(string)
        * commissioningCustomFlow value = '2'	
          * Positive:
@@ -1025,6 +1127,7 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
          * Negative:
            * length > MAX	
            * сontains spaces or line breaks	
+   
    * commissioningModeInitialStepsHint (Commissioning Mode Initial Steps Hint) - optional(uint32)
      * Positive:
       * value exists	
@@ -1032,8 +1135,9 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
       * integer value format
      * Negative:
       * empty value	
-      * length > MAX	MAX = 4 294 967 295
+      * length > MAX	(MAX = 4 294 967 295)
       * value does not match Pairing Hint table	
+   
    * commissioningModeInitialStepsInstruction (Commissioning Mode Initial Steps Instruction) - optional(string)
      * Positive:
       * value exists	
@@ -1042,6 +1146,7 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
       * MIN < length < MAX	
      * Negative:
       * length > MAX	
+
    * commissioningModeSecondaryStepsHint (Commissioning Mode Secondary Steps Hint) - optional(uint32)
      * Positive:
       * value exists	
@@ -1051,6 +1156,7 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
       * empty value	
       * length > MAX	(MAX = 4 294 967 295)
       * inappropriate value: commissioning ModeInitialStepsInstruction text does not match selected commissioningModeInitialStepsHint value
+   
    * commissioningModeSecondaryStepInstruction (Commissioning Mode Secondary Step Instruction) - optional(string)
      * Positive:
       * value exists	
@@ -1060,6 +1166,7 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
      * Negative:
       * length > MAX	
       * value does not match Pairing Hint table	
+   
    * userManualURL (User Manual URL) - optional(string)
      * Positive:
       * value exists	
@@ -1070,6 +1177,7 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
       * length > MAX	
       * сontains spaces or line breaks	
       * User Manual URL does not match Device Type ID	
+   
    * supportURL (Support URL) - optional(string)
      * Positive:
       * value exists	
@@ -1080,6 +1188,7 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
       * length > MAX	
       * сontains spaces or line breaks	
       * Support URL does not match Device Type ID	
+
    * productURL (Product URL) - optional(string)
      * Positive:
       * value exists	
@@ -1090,6 +1199,7 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
       * length > MAX	
       * сontains spaces or line breaks	
       * Product URL does not match Device Type ID	
+
    * lsfURL (Localized String File URL) - optional(string)
      * Positive:
       * value exists	
@@ -1100,13 +1210,15 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
       * length > MAX	
       * сontains spaces or line breaks	
       * Localized String File URL does not match Device Type ID	
+
    * enhancedSetupFlowOptions (Enhanced Setup Flow Options) - optional(uint16)
      * Positive:
       * value >= 0	
       * integer value format
       * empty value	
      * Negative:
-      * length > MAX	MAX = 65535
+      * length > MAX	(MAX = 65535)
+
    * enhancedSetupFlowTCUrl (Enhanced Setup Flow  Terms and Condition URL) - optional(string)
       * EnhancedSetupFlowOptions field has bit 0 set	
         * Positive:
@@ -1118,7 +1230,8 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
           * length > MAX	
           * сontains spaces or line breaks	
           * enhancedSetupFlowTCUrl does not match Device Type ID	
-      * EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+      * EnhancedSetupFlowOptions field has bit not equal to 0 set:enhancedSetupFlowTCUrl field should not be present in the command.	
+   
    * enhancedSetupFlowTCRevision (Enhanced Setup Flow Terms and Conditions Revision) - optional(uint16)
       * EnhancedSetupFlowOptions field has bit 0 set	
         * Positive:
@@ -1127,9 +1240,10 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
           * integer value format
           * empty value	
         * Negative:
-          * length > MAX	MAX = 65535
+          * length > MAX	(MAX = 65535)
           * new value < previous value	
-      * EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+      * EnhancedSetupFlowOptions field has bit not equal to 0 set: enhancedSetupFlowTCRevision field should not be present in the command.	
+   
    * enhancedSetupFlowTCDigest (Enhanced Setup Flow Terms and Conditions Digest) - optional(string)
       * EnhancedSetupFlowOptions field has bit 0 set	
         * Positive:
@@ -1139,8 +1253,9 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
           * MIN < length < MAX	
         * Negative:
           * length > MAX	
-          * inappropriate value	
-      * EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+          * inappropriate value: digest does not match the file uploaded from the EnhancedSetupFlowTCUrl field	
+      * EnhancedSetupFlowOptions field has bit not equal to 0 set: enhancedSetupFlowTCDigest field should not be present in the command
+   
    * enhancedSetupFlowTCFileSize (Enhanced Setup Flow Terms and Conditions File Size) - optional(uint32)
       * EnhancedSetupFlowOptions field has bit 0 set	
         * Positive:
@@ -1150,9 +1265,10 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
           * unit of measurement = bytes	
         * Negative:
           * empty value	
-          * length > MAX	MAX = 4 294 967 295
+          * length > MAX	(MAX = 4 294 967 295)
           * enhancedSetupFlowTC file size >  EnhancedSetupFlowTCFileSize limit	
-      * EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+      * EnhancedSetupFlowOptions field has bit not equal to 0 set: enhancedSetupFlowTCFileSize field should not be present in the command
+
    * maintenanceUrl (Maintenance URL)	optional(string)
       * EnhancedSetupFlowOptions field has bit 0 set	
         * Positive:
@@ -1162,14 +1278,16 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
           * MIN < length < MAX	
         * Negative:
           * length > MAX	
-      * EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+      * EnhancedSetupFlowOptions field has bit not equal to 0 set: maintenanceUrl field should not be present in the command
+
    * schemaVersion (Schema Version) - optional(uint16)
      * Positive:
        * value = 0	
        * integer value format
        * empty value	
      * Negative:
-       * length > MAX	MAX = 65535
+       * length > MAX	(MAX = 65535)
+   
    * discoveryCapabilitiesBitmask (Discovery Capabilities Bitmask) - optional(uint16)
      * commissioningFallbackURL field is filled	
        * Positive:
@@ -1177,8 +1295,9 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
          * integer value format
          * empty value	
        * Negative:
-         * length > MAX	MAX = 65535
+         * length > MAX	(MAX = 65535)
      * commissioningFallbackURL field is not filled	
+   
    * commissioningFallbackURL (Commissioning Fallback URL) - optional(string)
      * Positive:
        * value exists	
@@ -1188,258 +1307,263 @@ REST API command:/cosmos/tx/v1beta1/txs: [MsgCreateModel](https://github.com/zig
      * Negative:
        * length > MAX	
        * сontains spaces or line breaks
+
 ### [EDIT_MODEL](https://github.com/zigbee-alliance/distributed-compliance-ledger/blob/master/docs/transactions/model.md#edit_model)	
 #### CLI command	
 CLI command send: `dcld tx model delete-model --vid=<uint16> --pid=<uint16> --from=<account>`	
 
 * CLI command send:
-Valid command	
-command exists/relevant	
-Invalid command	
-access is denied to execute command	
-incorrect command syntax	
+  * Valid command	
+    * command exists/relevant	
+  * Invalid command	
+    * access is denied to execute command	
+    * incorrect command syntax	
+
 * Сommand result	
-EDIT_MODEL command completed successfully	edits an existing Model identified by a unique combination of vid (vendor ID) and pid (product ID) by the vendor account
-ADD_MODEL command completed successfully	
-there is at least one Model identified by a unique combination of vid (vendor ID) and pid (product ID)	
-combination of vid (vendor ID) and pid (product ID) valid	
-user do not make changes to non-editable fields	
-EDIT_MODEL command failed	does not edits an existing Model identified by a unique combination of vid (vendor ID) and pid (product ID) by the vendor account
-ADD_MODEL command was not executed	
-there is not one Model identified by a unique combination of vid (vendor ID) and pid (product ID)	
-vid (vendor ID) valid and pid (product ID) invalid	
-vid (vendor ID) invalid and pid (product ID) valid	
-user tries to edit non-editable fields	
+  * EDIT_MODEL command completed successfully	⇒ edits an existing Model identified by a unique combination of vid (vendor ID) and pid (product ID) by the vendor account
+    * ADD_MODEL command completed successfully	
+    * there is at least one Model identified by a unique combination of vid (vendor ID) and pid (product ID)	
+    * combination of vid (vendor ID) and pid (product ID) valid	
+    * user do not make changes to non-editable fields	
+  * EDIT_MODEL command failed	⇒ does not edits an existing Model identified by a unique combination of vid (vendor ID) and pid (product ID) by the vendor account
+    * ADD_MODEL command was not executed	
+    * there is not one Model identified by a unique combination of vid (vendor ID) and pid (product ID)	
+    * vid (vendor ID) valid and pid (product ID) invalid	
+    * vid (vendor ID) invalid and pid (product ID) valid	
+    * user tries to edit non-editable fields	
+
 * Role (Who can send)	
-Trustee	error
-Vendor 	error
-Vendor account associated with the given Vendor ID who has created the model	
-Vendor account is not associated with the given Vendor ID who has created the model	error
-VendorAdmin 	error
-CertificationCenter 	error
-NodeAdmin 	error
+  * Positive:
+    * Vendor (Vendor account associated with the given Vendor ID who has created the model)	
+  * Negative:
+    * Trustee
+    * Vendor (Vendor account is not associated with the given Vendor ID who has created the model	error)
+    * VendorAdmin 	
+    * CertificationCenter 	
+    * NodeAdmin
 * Parameters:	
-vid (Vendor ID)	uint16 
-     * Positive:
-value > 0	
-integer value format
-     * Negative:	
-empty value
-value =< 0
-string value format	
-nonexistent ID	
-length > MAX	MAX = 65535
-pid (Product ID)	uint16 
-     * Positive:
-value > 0	
-integer value format
-value falls within the specified range	
-     * Negative:	
-empty value	
-value =< 0
-string value format	
-nonexistent ID	
-length > MAX	MAX = 65535
-productName (Product Name)	optional(string)
-     * Positive:
-empty value	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-productLabel (Product Label)	optional(string)
-     * Positive:
-empty value	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-path/string format does not match	
-partNumber (Part Number)	optional(string)
-     * Positive:
-empty value	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-nonexistent value	
-commissioningCustomFlowURL (Commissioning Custom Flow URL)	optional(string)
-commissioningCustomFlow value = '2'	
-     * Positive:
-value exists	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-сontains spaces or line breaks	
-commissioningCustomFlow value = '1'	
-     * Positive:
-value exists	
-empty value	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-сontains spaces or line breaks	
-commissioningModeInitialStepsInstruction (Commissioning Mode Initial Steps Instruction)	optional(string)
-     * Positive:
-value exists	
-empty value	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-commissioningModeSecondaryStepInstruction (Commissioning Mode Secondary Step Instruction)	optional(string)
-     * Positive:
-value exists	
-empty value	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-value does not match Pairing Hint table	
-userManualURL (User Manual URL)	optional(string)
-     * Positive:
-value exists	
-empty value	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-сontains spaces or line breaks	
-User Manual URL does not match Device Type ID	
-supportURL (Support URL)	optional(string)
-     * Positive:
-value exists	
-empty value	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-сontains spaces or line breaks	
-Support URL does not match Device Type ID	
-productURL (Product URL)	optional(string)
-     * Positive:
-value exists	
-empty value	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-сontains spaces or line breaks	
-Product URL does not match Device Type ID	
-lsfURL (Localized String File URL)	optional(string)
-     * Positive:
-value exists	
-empty value	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-сontains spaces or line breaks	
-Localized String File URL does not match Device Type ID	
-lsfRevision (Localized String File Revision)	optional(uint32)
-     * Positive:
-value exists	
-value >= 0	
-integer value format
-     * Negative:	
-empty value	
-length > MAX	MAX = 4 294 967 295
-nonexistent ID	
-commissioningModeInitialStepsHint (Commissioning Mode Initial Steps Hint)	optional(uint32)
-     * Positive:
-value exists	
-value > 0	
-integer value format
-     * Negative:	
-empty value	
-value =< 0
-string value format	
-length > MAX	MAX = 4 294 967 295
-nonexistent ID	
-enhancedSetupFlowOptions (Enhanced Setup Flow Options)	optional(uint16)
-     * Positive:
-value state	
-0	
-1	
-integer value format
-empty value	
-     * Negative:	
-length > MAX	MAX = 65535
-enhancedSetupFlowTCUrl (Enhanced Setup Flow Terms and Condition URL)	optional(string)
-EnhancedSetupFlowOptions field has bit 0 set	
-     * Positive:
-value exists	
-empty value	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-сontains spaces or line breaks	
-enhancedSetupFlowTCUrl does not match Device Type ID	
-EnhancedSetupFlowOptions field has bit not equal to 0 set.	
-enhancedSetupFlowTCRevision (Enhanced Setup Flow Terms and Condition Revision)	optional(uint16)
-EnhancedSetupFlowOptions field has bit 0 set	
-     * Positive:
-unique value	
-value >= 0	
-integer value format
-empty value	
-     * Negative:	
-length > MAX	MAX = 65535
-new value < previous value	
-EnhancedSetupFlowOptions field has bit not equal to 0 set.	
-enhancedSetupFlowTCDigest (Enhanced Setup Flow Terms and Condition Digest)	optional(string)
-EnhancedSetupFlowOptions field has bit 0 set	
-     * Positive:
-value exists	
-empty value	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-inappropriate value	
-EnhancedSetupFlowOptions field has bit not equal to 0 set.	
-enhancedSetupFlowTCFileSize (Enhanced Setup Flow Terms and Condition File Size)	optional(uint32)
-EnhancedSetupFlowOptions field has bit 0 set	
-     * Positive:
-value exists	
-value >= 0	
-integer value format
-unit of measurement = bytes	
-     * Negative:	
-empty value	
-length > MAX	MAX = 4 294 967 295
-enhancedSetupFlowTC file size >  EnhancedSetupFlowTCFileSize limit	
-EnhancedSetupFlowOptions field has bit not equal to 0 set.	
-maintenanceUrl (Maintenance URL)	optional(string)
-EnhancedSetupFlowOptions field has bit 0 set	
-     * Positive:
-value exists	
-empty value	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-EnhancedSetupFlowOptions field has bit not equal to 0 set.	
-schemaVersion (Schema Version)	optional(uint16)
-     * Positive:
-value exists	
-value = 0	
-integer value format
-empty value	
-     * Negative:	
-length > MAX	MAX = 65535
-commissioningFallbackURL (Commissioning Fallback URL)	optional(string)
-     * Positive:
-specific value	
-empty value	
-text value format	
-MIN < length < MAX	
-     * Negative:	
-length > MAX	
-сontains spaces or line breaks	
+
+  * vid (Vendor ID)	uint16 
+       * Positive:
+  * value > 0	
+  * integer value format
+       * Negative:	
+  * empty value
+  * value =< 0
+  * string value format	
+  * nonexistent ID	
+  * length > MAX	(MAX = 65535)
+  pid (Product ID)	uint16 
+       * Positive:
+  value > 0	
+  integer value format
+  value falls within the specified range	
+       * Negative:	
+  empty value	
+  value =< 0
+  string value format	
+  nonexistent ID	
+  length > MAX	(MAX = 65535)
+  productName (Product Name)	optional(string)
+       * Positive:
+  empty value	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  productLabel (Product Label)	optional(string)
+       * Positive:
+  empty value	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  path/string format does not match	
+  partNumber (Part Number)	optional(string)
+       * Positive:
+  empty value	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  nonexistent value	
+  commissioningCustomFlowURL (Commissioning Custom Flow URL)	optional(string)
+  commissioningCustomFlow value = '2'	
+       * Positive:
+  value exists	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  сontains spaces or line breaks	
+  commissioningCustomFlow value = '1'	
+       * Positive:
+  value exists	
+  empty value	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  сontains spaces or line breaks	
+  commissioningModeInitialStepsInstruction (Commissioning Mode Initial Steps Instruction)	optional(string)
+       * Positive:
+  value exists	
+  empty value	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  commissioningModeSecondaryStepInstruction (Commissioning Mode Secondary Step Instruction)	optional(string)
+       * Positive:
+  value exists	
+  empty value	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  value does not match Pairing Hint table	
+  userManualURL (User Manual URL)	optional(string)
+       * Positive:
+  value exists	
+  empty value	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  сontains spaces or line breaks	
+  User Manual URL does not match Device Type ID	
+  supportURL (Support URL)	optional(string)
+       * Positive:
+  value exists	
+  empty value	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  сontains spaces or line breaks	
+  Support URL does not match Device Type ID	
+  productURL (Product URL)	optional(string)
+       * Positive:
+  value exists	
+  empty value	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  сontains spaces or line breaks	
+  Product URL does not match Device Type ID	
+  lsfURL (Localized String File URL)	optional(string)
+       * Positive:
+  value exists	
+  empty value	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  сontains spaces or line breaks	
+  Localized String File URL does not match Device Type ID	
+  lsfRevision (Localized String File Revision)	optional(uint32)
+       * Positive:
+  value exists	
+  value >= 0	
+  integer value format
+       * Negative:	
+  empty value	
+  length > MAX	(MAX = 4 294 967 295)
+  nonexistent ID	
+  commissioningModeInitialStepsHint (Commissioning Mode Initial Steps Hint)	optional(uint32)
+       * Positive:
+  value exists	
+  value > 0	
+  integer value format
+       * Negative:	
+  empty value	
+  value =< 0
+  string value format	
+  length > MAX	MAX = (4 294 967 295)
+  nonexistent ID	
+  enhancedSetupFlowOptions (Enhanced Setup Flow Options)	optional(uint16)
+       * Positive:
+  value state	
+  0	
+  1	
+  integer value format
+  empty value	
+       * Negative:	
+  length > MAX	(MAX = 65535)
+  enhancedSetupFlowTCUrl (Enhanced Setup Flow Terms and Condition URL)	optional(string)
+  EnhancedSetupFlowOptions field has bit 0 set	
+       * Positive:
+  value exists	
+  empty value	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  сontains spaces or line breaks	
+  enhancedSetupFlowTCUrl does not match Device Type ID	
+  EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+  enhancedSetupFlowTCRevision (Enhanced Setup Flow Terms and Condition Revision)	optional(uint16)
+  EnhancedSetupFlowOptions field has bit 0 set	
+       * Positive:
+  unique value	
+  value >= 0	
+  integer value format
+  empty value	
+       * Negative:	
+  length > MAX	(MAX = 65535)
+  new value < previous value	
+  EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+  enhancedSetupFlowTCDigest (Enhanced Setup Flow Terms and Condition Digest)	optional(string)
+  EnhancedSetupFlowOptions field has bit 0 set	
+       * Positive:
+  value exists	
+  empty value	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  inappropriate value	
+  EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+  enhancedSetupFlowTCFileSize (Enhanced Setup Flow Terms and Condition File Size)	optional(uint32)
+  EnhancedSetupFlowOptions field has bit 0 set	
+       * Positive:
+  value exists	
+  value >= 0	
+  integer value format
+  unit of measurement = bytes	
+       * Negative:	
+  empty value	
+  length > MAX	(MAX = 4 294 967 295)
+  enhancedSetupFlowTC file size >  EnhancedSetupFlowTCFileSize limit	
+  EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+  maintenanceUrl (Maintenance URL)	optional(string)
+  EnhancedSetupFlowOptions field has bit 0 set	
+       * Positive:
+  value exists	
+  empty value	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  EnhancedSetupFlowOptions field has bit not equal to 0 set.	
+  schemaVersion (Schema Version)	optional(uint16)
+       * Positive:
+  value exists	
+  value = 0	
+  integer value format
+  empty value	
+       * Negative:	
+  length > MAX	(MAX = 65535)
+  commissioningFallbackURL (Commissioning Fallback URL)	optional(string)
+       * Positive:
+  specific value	
+  empty value	
+  text value format	
+  MIN < length < MAX	
+       * Negative:	
+  length > MAX	
+  сontains spaces or line breaks	
 #### REST API 	
 REST API command send	
 Valid command	
@@ -1482,7 +1606,7 @@ empty value
 value =< 0
 string value format		
 nonexistent ID	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 pid (Product ID)	uint16 
      * Positive:
 value > 0	
@@ -1493,7 +1617,7 @@ empty value
 value =< 0
 string value format		
 nonexistent ID	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 productName (Product Name)	optional(string)
      * Positive:
 empty value	
@@ -1599,7 +1723,7 @@ value >= 0
 integer value format
      * Negative:	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 nonexistent ID	
 commissioningModeInitialStepsHint (Commissioning Mode Initial Steps Hint)	optional(uint32)
      * Positive:
@@ -1610,7 +1734,7 @@ integer value format
 empty value	
 value =< 0
 string value format	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 nonexistent ID	
 enhancedSetupFlowOptions (Enhanced Setup Flow Options)	optional(uint16)
      * Positive:
@@ -1620,7 +1744,7 @@ value state
 integer value format
 empty value	
      * Negative:	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 enhancedSetupFlowTCUrl (Enhanced Setup Flow Terms and Condition URL)	optional(string)
 EnhancedSetupFlowOptions field has bit 0 set	
      * Positive:
@@ -1641,7 +1765,7 @@ value >= 0
 integer value format
 empty value	
      * Negative:	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 new value < previous value	
 EnhancedSetupFlowOptions field has bit not equal to 0 set.	
 enhancedSetupFlowTCDigest (Enhanced Setup Flow Terms and Condition Digest)	optional(string)
@@ -1664,7 +1788,7 @@ integer value format
 unit of measurement = bytes	
      * Negative:	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 enhancedSetupFlowTC file size >  EnhancedSetupFlowTCFileSize limit	
 EnhancedSetupFlowOptions field has bit not equal to 0 set.	
 maintenanceUrl (Maintenance URL)	optional(string)
@@ -1734,7 +1858,7 @@ empty value
 value =< 0
 string value format		
 nonexistent ID	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 pid (Product ID)	uint16 
      * Positive:
 value > 0	
@@ -1745,7 +1869,7 @@ empty value
 value =< 0
 string value format		
 nonexistent ID	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 #### REST API 	
 REST API command send	
 Valid command	
@@ -1787,7 +1911,7 @@ empty value
 value =< 0
 string value format		
 nonexistent ID	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 pid (Product ID)	uint16 
      * Positive:
 value > 0	
@@ -1798,7 +1922,7 @@ empty value
 value =< 0
 string value format		
 nonexistent ID	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 ### ADD_MODEL_VERSION	
 #### CLI command	
 CLI command send	
@@ -1839,7 +1963,7 @@ nonexistent ID
 empty value
 value =< 0
 string value format		
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 pid (Product ID)	uint16 
      * Positive:
 unique combination	
@@ -1851,7 +1975,7 @@ value falls within the specified range
 empty value
 value =< 0
 string value format		
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 softwareVersion (Software Version)	uint32
      * Positive:
 value exists	
@@ -1859,7 +1983,7 @@ value >= 0
 integer value format
      * Negative:	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 softwareVersionSting (Software Version Sting)	string
      * Positive:
 value exists	
@@ -1873,7 +1997,7 @@ cdVersionNumber (CD Version Number)	uint16
 value >= 0	
 integer value format
      * Negative:	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 empty value	
 minApplicableSoftwareVersion (Min Applicable Software Version)	uint32
      * Positive:
@@ -1882,7 +2006,7 @@ integer value format
      * Negative:	
 entered value > MinApplicableSoftwareVersion value	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 maxApplicableSoftwareVersion (Max Applicable Software Version)	uint32
      * Positive:
 value exists	
@@ -1890,7 +2014,7 @@ integer value format
      * Negative:	
 entered value < maxApplicableSoftwareVersion value	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 firmwareInformation (Firmware Information)	optional(string)
      * Positive:
 value exists	
@@ -1994,7 +2118,7 @@ value = 0
 integer value format
 empty value	
      * Negative:	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 #### REST API 	
 REST API command send	
 Valid command	
@@ -2036,7 +2160,7 @@ nonexistent ID
 empty value
 value =< 0
 string value format		
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 pid (Product ID)	uint16 
      * Positive:
 unique combination	
@@ -2048,7 +2172,7 @@ value falls within the specified range
 empty value
 value =< 0
 string value format		
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 softwareVersion (Software Version)	uint32
      * Positive:
 value exists	
@@ -2056,7 +2180,7 @@ value >= 0
 integer value format
      * Negative:	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 softwareVersionSting (Software Version Sting)	string
      * Positive:
 value exists	
@@ -2070,7 +2194,7 @@ cdVersionNumber (CD Version Number)	uint16
 value >= 0	
 integer value format
      * Negative:	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 empty value	
 minApplicableSoftwareVersion (Min Applicable Software Version)	uint32
      * Positive:
@@ -2079,7 +2203,7 @@ integer value format
      * Negative:	
 entered value > MinApplicableSoftwareVersion value	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 maxApplicableSoftwareVersion (Max Applicable Software Version)	uint32
      * Positive:
 value exists	
@@ -2087,7 +2211,7 @@ integer value format
      * Negative:	
 entered value < maxApplicableSoftwareVersion value	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 firmwareInformation (Firmware Information)	optional(string)
      * Positive:
 value exists	
@@ -2191,7 +2315,7 @@ value = 0
 integer value format
 empty value	
      * Negative:	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 ### EDIT_MODEL_VERSION	
 #### CLI command	
 CLI command send	
@@ -2236,7 +2360,7 @@ nonexistent ID
 empty value
 value =< 0
 string value format		
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 pid (Product ID)	uint16 
      * Positive:
 unique combination	
@@ -2248,7 +2372,7 @@ value falls within the specified range
 empty value
 value =< 0
 string value format		
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 softwareVersion (Software Version)	uint32
      * Positive:
 value exists	
@@ -2256,7 +2380,7 @@ value >= 0
 integer value format
      * Negative:	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 softwareVersionValid (Software Version Valid)	optional(bool)
      * Positive:
 empty value	
@@ -2284,7 +2408,7 @@ integer value format
      * Negative:	
 entered value < maxApplicableSoftwareVersion value	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 minApplicableSoftwareVersion (Min Applicable Software Version)	uint32
      * Positive:
 value exists	
@@ -2292,7 +2416,7 @@ integer value format
      * Negative:	
 entered value > MinApplicableSoftwareVersion value	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	MAX = (4 294 967 295)
 otaFileSize (OTA File Size)	optional(string)
      * Positive:
 value exists	
@@ -2338,7 +2462,7 @@ value = 0
 integer value format
 empty value	
      * Negative:	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 #### REST API 	
 REST API command send	
 Valid command	
@@ -2384,7 +2508,7 @@ nonexistent ID
 empty value
 value =< 0
 string value format		
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 pid (Product ID)	uint16 
      * Positive:
 unique combination	
@@ -2396,7 +2520,7 @@ value falls within the specified range
 empty value
 value =< 0
 string value format		
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 softwareVersion (Software Version)	uint32
      * Positive:
 value exists	
@@ -2404,7 +2528,7 @@ value >= 0
 integer value format
      * Negative:	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 softwareVersionValid (Software Version Valid)	optional(bool)
      * Positive:
 empty value	
@@ -2432,7 +2556,7 @@ integer value format
      * Negative:	
 entered value < maxApplicableSoftwareVersion value	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 minApplicableSoftwareVersion (Min Applicable Software Version)	uint32
      * Positive:
 value exists	
@@ -2440,7 +2564,7 @@ integer value format
      * Negative:	
 entered value > MinApplicableSoftwareVersion value	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 otaFileSize (OTA File Size)	optional(string)
      * Positive:
 value exists	
@@ -2486,7 +2610,7 @@ value = 0
 integer value format
 empty value	
      * Negative:	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 ### DELETE_MODEL_VERSION	
 #### CLI command	
 CLI command send	
@@ -2529,7 +2653,7 @@ nonexistent ID
 empty value
 value =< 0
 string value format		
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 pid (Product ID)	uint16 
      * Positive:
 unique combination	
@@ -2541,7 +2665,7 @@ value falls within the specified range
 empty value
 value =< 0
 string value format		
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 softwareVersion (Software Version)	uint32
      * Positive:
 value exists	
@@ -2549,7 +2673,7 @@ value >= 0
 integer value format
      * Negative:	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 #### REST API 	
 REST API command send	
 Valid command	
@@ -2593,7 +2717,7 @@ nonexistent ID
 empty value
 value =< 0
 string value format		
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 pid (Product ID)	uint16 
      * Positive:
 unique combination	
@@ -2605,7 +2729,7 @@ value falls within the specified range
 empty value
 value =< 0
 string value format		
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 softwareVersion (Software Version)	uint32
      * Positive:
 value exists	
@@ -2613,7 +2737,7 @@ value >= 0
 integer value format
      * Negative:	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 ### GET_MODEL	
 #### CLI command	
 CLI command send	
@@ -2649,7 +2773,7 @@ empty value
 value =< 0
 string value format		
 nonexistent value	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 pid (Product ID)	uint16 
      * Positive:
 unique value	
@@ -2661,7 +2785,7 @@ empty value
 value =< 0
 string value format		
 nonexistent value	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 #### REST API 	
 REST API command send	
 Valid command	
@@ -2698,7 +2822,7 @@ empty value
 value =< 0
 string value format		
 nonexistent value	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 pid (Product ID)	uint16 
      * Positive:
 unique value	
@@ -2710,7 +2834,7 @@ empty value
 value =< 0
 string value format		
 nonexistent value	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 ### GET_MODEL_VERSION	
 #### CLI command	
 CLI command send	
@@ -2765,7 +2889,7 @@ empty value
 value =< 0
 string value format		
 nonexistent value	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 pid (Product ID)	uint16 
      * Positive:
 unique value	
@@ -2777,7 +2901,7 @@ empty value
 value =< 0
 string value format		
 nonexistent value	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 softwareVersion (Software Version)	uint32
      * Positive:
 value exists	
@@ -2785,7 +2909,7 @@ value >= 0
 integer value format
      * Negative:	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 #### REST API 	
 REST API command send	
 Valid command	
@@ -2825,7 +2949,7 @@ empty value
 value =< 0
 string value format		
 nonexistent value	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 pid (Product ID)	uint16 
      * Positive:
 unique value	
@@ -2837,7 +2961,7 @@ empty value
 value =< 0
 string value format		
 nonexistent value	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 softwareVersion (Software Version)	uint32
      * Positive:
 value exists	
@@ -2845,7 +2969,7 @@ value >= 0
 integer value format
      * Negative:	
 empty value	
-length > MAX	MAX = 4 294 967 295
+length > MAX	(MAX = 4 294 967 295)
 ### GET_ALL_MODELS	
 #### CLI command	
 CLI command send	
@@ -3004,7 +3128,7 @@ empty value
 value =< 0
 string value format		
 nonexistent value	
-length > MAX	MAX = 65535
+length > MAX	(MAX = 65535)
 #### REST API 	
 REST API command send	
 Valid command	
